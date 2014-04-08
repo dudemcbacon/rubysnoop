@@ -7,3 +7,7 @@ get '/index' do
   @thing = 'butt'
   erb :index  
 end
+
+post '/scan' do
+  "You wanted to scan '#{params[:address]}'."
+end

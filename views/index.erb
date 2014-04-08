@@ -4,5 +4,9 @@
 </head>
 <body>
 <h2>I am a <%= @thing %>!</h2>
+<form action="/scan" method="post">
+<label>IP Address: </label><input name="address" />
+<input type="submit" value="Submit">
+</form>
 </body>
 </html>
