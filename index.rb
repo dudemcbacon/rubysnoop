@@ -3,6 +3,7 @@ require 'erb'
 require 'nmap/program'
 require 'nmap/xml'
 require 'pry'
+require 'ipaddress'
 
 set :bind, '0.0.0.0'
 
@@ -15,6 +16,10 @@ post '/scan' do
   @host = {}
   @host['address'] = params[:address] 
   @host['ports'] = []
+  
+  if !IPAddress.valid? @host['address']
+    return "Pleas enter a valid IP address."
+  end 
    
   Nmap::Program.scan do |nmap|
     nmap.syn_scan = true
