@@ -1,9 +1,9 @@
-require 'sinatra'
 require 'erb'
 require 'nmap/program'
 require 'nmap/xml'
 require 'pry'
 require 'ipaddress'
+require 'sinatra'
 
 set :bind, '0.0.0.0'
 
@@ -37,9 +37,19 @@ post '/scan' do
       "[#{host.ip}]"
       
       host.each_port do |port|
+        if port.service.to_s == "http"
+           print get_title "http://#{host.ip}:#{port.number}"
+        end
+        binding.pry
         @host['ports'].push(port)
       end
     end
   end
   erb :results
+end
+
+helpers do
+  def get_title(url)
+    return url #Mechanize.new.get(url).title    
+  end
 end
