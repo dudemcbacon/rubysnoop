@@ -1,4 +1,7 @@
 #!/usr/bin/env ruby
+
+require File.dirname(__FILE__) + '/scanner.rb'
+
 require 'erb'
 require 'nmap/program'
 require 'nmap/xml'
@@ -16,37 +19,22 @@ class RubySnoop < Sinatra::Base
   end
 
   post '/scan' do
+    target = params[:address]
+
     @host = {}
-    @host['address'] = params[:address] 
+    @host['address'] = target
     @host['ports'] = []
     
     if !IPAddress.valid? @host['address']
       return "Pleas enter a valid IP address."
     end 
+   
+    nmap = Scanner.new
      
-    Nmap::Program.scan do |nmap|
-      nmap.syn_scan = true
-      nmap.service_scan = true
-      nmap.os_fingerprint = true
-      nmap.xml = 'scan.xml'
-      nmap.verbose = true
+    if nmap.scan(target, [80, 8080], "scan.xml")
+      @host['ports'] = nmap.parse("scan.xml")
+    end 
 
-      nmap.ports = [80, 8080]
-      nmap.targets = params[:address]
-    end
-
-    Nmap::XML.new('scan.xml') do |xml|
-      xml.each_host do |host|
-        "[#{host.ip}]"
-        
-        host.each_port do |port|
-          if port.service.to_s == "http"
-             print get_title "http://#{host.ip}:#{port.number}"
-          end
-          @host['ports'].push(port)
-        end
-      end
-    end
     erb :results
   end
 
