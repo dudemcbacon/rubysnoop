@@ -1,0 +1,3 @@
+require 'rubysnoop'
+
+RubySnoop.run!
