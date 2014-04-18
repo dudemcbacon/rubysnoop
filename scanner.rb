@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
-require 'nmap/base'
+require 'nmap/program'
 require 'nmap/xml'
+require 'mechanize'
 
 class Scanner
 
@@ -18,9 +19,9 @@ class Scanner
   # Returns true if scan completed successfully.
   def scan(target, ports, filename)
     Nmap::Program.scan do |nmap|
-      nmap.syn_scan = true
-      nmap.service_scan = true
-      nmap.os_fingerprint = true
+      nmap.syn_scan = false
+      nmap.service_scan = false
+      nmap.os_fingerprint = false
       nmap.xml = filename
       nmap.verbose = true
 
@@ -43,17 +44,36 @@ class Scanner
     ports = []
     Nmap::XML.new('scan.xml') do |xml|
       xml.each_host do |host|
-        "[#{host.ip}]"
-        
         host.each_port do |port|
-          if port.service.to_s == "http"
-             print get_title "http://#{host.ip}:#{port.number}"
+          # TODO: find a better way to do this...  
+          if port.service.to_s == "http" || port.service.to_s == "https"
+            port.define_singleton_method(:title) do
+              url = "http://#{host.ip}:#{port.number}"
+              Mechanize.new.get(url).title
+            end
+          else
+            port.define_singleton_method(:title) do
+              ""
+            end
           end
           ports.push(port)
         end
       end
     end
-
-    return ports
+    ports
+  end
+  
+  # Public: Get the title of a webpage given a URL.
+  #
+  # url - The String URL.
+  #
+  # Examples
+  #
+  #   get_title "http://www.google.com"
+  #   # => "Google"
+  #
+  # Returns a string title.
+  def get_title(url)
+    Mechanize.new.get(url).title
   end
 end
