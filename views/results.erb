@@ -1,14 +1,25 @@
+<html>
 <h1>Scan Results: </h1>
 <h2>Host: <%= @host['address'] %></h2>
 
 <table>
-<% @host['ports'].each do |port| %>
-  <tr><% binding.pry %>
-    <td><%= port.number %></td>
-    <td><%= port.protocol %></td>
-    <td><%= port.state %></td>
-    <td><%= port.service %></td>
-  <tr>
-<% end %>
+  <thead>
+    <tr>
+      <td>Port</td>
+      <td>Protocol</td>
+      <td>State</td>
+      <td>Service</td>
+      <td>Title</td>
+    </tr>
+  </thead>
+  <% @host['ports'].each do |port| %>
+    <tr>
+      <td><%= port.number %></td>
+      <td><%= port.protocol %></td>
+      <td><%= port.state %></td>
+      <td><%= port.service %></td>
+      <td><%= port.title %></td>
+    <tr>
+  <% end %>
 </table>
-
+</html>
