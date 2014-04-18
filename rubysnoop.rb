@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 require 'erb'
 require 'nmap/program'
 require 'nmap/xml'
