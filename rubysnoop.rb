@@ -43,7 +43,6 @@ class RubySnoop < Sinatra::Base
           if port.service.to_s == "http"
              print get_title "http://#{host.ip}:#{port.number}"
           end
-          binding.pry
           @host['ports'].push(port)
         end
       end
