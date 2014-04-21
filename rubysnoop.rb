@@ -20,7 +20,8 @@ class RubySnoop < Sinatra::Base
 
   post '/scan' do
     target = params[:address]
-
+    ports = params[:ports]
+    
     @host = {}
     @host['address'] = target
     @host['ports'] = []
@@ -31,9 +32,11 @@ class RubySnoop < Sinatra::Base
    
     nmap = Scanner.new
      
-    if nmap.scan(target, [80, 8080], "scan.xml")
+    if nmap.scan(target, ports, "scan.xml")
       @host['ports'] = nmap.parse("scan.xml")
     end 
+    
+    File.delete("scan.xml")
 
     erb :results
   end

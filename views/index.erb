@@ -5,7 +5,9 @@
 <body>
 <h2>I am a <%= @thing %>!</h2>
 <form action="/scan" method="post">
-<label>IP Address: </label><input name="address" />
+<label>IP Address: </label><input name="address" /></br>
+<input type="checkbox" name="ports[]" value="80">80</br>
+<input type="checkbox" name="ports[]" value="8080">8080</br>
 <input type="submit" value="Submit">
 </form>
 </body>
