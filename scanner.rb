@@ -4,7 +4,7 @@ require 'nmap/xml'
 require 'mechanize'
 
 class Scanner
-
+  
   # Public: Scan target on specified ports.
   #
   # target    - The String IP address to be targeted
