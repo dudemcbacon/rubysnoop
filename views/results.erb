@@ -1,7 +1,9 @@
 <html>
 <h1>Scan Results: </h1>
-<h2>Host: <%= @host['address'] %></h2>
 
+<% @hosts.each do |host| %>
+
+<h2>Host: <%= host['hostname'] %></h2>
 <table>
   <thead>
     <tr>
@@ -12,7 +14,7 @@
       <td>Title</td>
     </tr>
   </thead>
-  <% @host['ports'].each do |port| %>
+  <% host['ports'].each do |port| %>
     <tr>
       <td><%= port.number %></td>
       <td><%= port.protocol %></td>
@@ -22,4 +24,5 @@
     <tr>
   <% end %>
 </table>
+<% end %>
 </html>
