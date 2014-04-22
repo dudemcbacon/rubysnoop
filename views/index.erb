@@ -1,14 +1,22 @@
-<html>
-<head>
-  <title>RubySnoop!</title>
-</head>
-<body>
-<h2>I am a <%= @thing %>!</h2>
-<form action="/scan" method="post">
-<label>IP Address: </label><input name="address" /></br>
-<input type="checkbox" name="ports[]" value="80">80</br>
-<input type="checkbox" name="ports[]" value="8080">8080</br>
-<input type="submit" value="Submit">
-</form>
-</body>
-</html>
+<a id="menu-toggle" href="#" class="btn btn-primary btn-lg toggle"><i class="fa fa-bars"></i></a>
+<div id="sidebar-wrapper">
+  <ul class="sidebar-nav">
+    <a id="menu-close" href="#" class="btn btn-default btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
+    <li class="sidebar-brand"><a href="http://startbootstrap.com">Start Bootstrap</a>
+    </li>
+    <li><a href="#top">Home</a>
+    </li>
+  </ul>
+</div>
+
+<div id="top" class="header">
+  <div class="vert-text">
+    <h1>I am a <%= @thing %>!</h1>
+    <form action="/scan" method="post">
+      <label>IP Address: </label><input name="address" /></br>
+      <input type="checkbox" name="ports[]" value="80">80</br>
+      <input type="checkbox" name="ports[]" value="8080">8080</br>
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+</div>
