@@ -22,20 +22,16 @@ class RubySnoop < Sinatra::Base
     target = params[:address]
     ports = params[:ports]
     
-    @host = {}
-    @host['address'] = target
-    @host['ports'] = []
-    
     begin
       hosts = IPAddress.parse target
     rescue ArgumentError
       return "Please enter a valid IP address or network."
     end
 
-    #if !IPAddress.valid? @host['address']
-    #  return "Pleas enter a valid IP address."
-    #end 
-   
+    if ports.nil?
+      return "Please select at least one port."
+    end
+
     nmap = Scanner.new
      
     if nmap.scan(target, ports, "scan.xml")
