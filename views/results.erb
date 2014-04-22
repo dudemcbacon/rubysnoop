@@ -4,25 +4,29 @@
 <% @hosts.each do |host| %>
 
 <h2>Host: <%= host['hostname'] %></h2>
-<table>
-  <thead>
-    <tr>
-      <td>Port</td>
-      <td>Protocol</td>
-      <td>State</td>
-      <td>Service</td>
-      <td>Title</td>
-    </tr>
-  </thead>
-  <% host['ports'].each do |port| %>
-    <tr>
-      <td><%= port.number %></td>
-      <td><%= port.protocol %></td>
-      <td><%= port.state %></td>
-      <td><%= port.service %></td>
-      <td><%= port.title %></td>
-    <tr>
+  <% if host['hostname'].status.state == :up %>
+    <table>
+      <thead>
+        <tr>
+          <td>Port</td>
+          <td>Protocol</td>
+          <td>State</td>
+          <td>Service</td>
+          <td>Title</td>
+        </tr>
+      </thead>
+      <% host['ports'].each do |port| %>
+        <tr>
+          <td><%= port.number %></td>
+          <td><%= port.protocol %></td>
+          <td><%= port.state %></td>
+          <td><%= port.service %></td>
+          <td><%= port.title %></td>
+        <tr>
+      <% end %>
+    </table>
+  <% else %>
+    <p>Host is down.</p>
   <% end %>
-</table>
 <% end %>
 </html>
