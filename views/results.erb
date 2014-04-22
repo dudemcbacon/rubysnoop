@@ -1,32 +1,30 @@
-<html>
-<h1>Scan Results: </h1>
-
-<% @hosts.each do |host| %>
-
-<h2>Host: <%= host['hostname'] %></h2>
-  <% if host['hostname'].status.state == :up %>
-    <table>
-      <thead>
-        <tr>
-          <td>Port</td>
-          <td>Protocol</td>
-          <td>State</td>
-          <td>Service</td>
-          <td>Title</td>
-        </tr>
-      </thead>
-      <% host['ports'].each do |port| %>
-        <tr>
-          <td><%= port.number %></td>
-          <td><%= port.protocol %></td>
-          <td><%= port.state %></td>
-          <td><%= port.service %></td>
-          <td><%= port.title %></td>
-        <tr>
+<table class="table  table-hover">
+  <thead>
+    <tr>
+      <th>Address</th>
+      <th>Port</th>
+      <th>Protocol</th>
+      <th>State</th>
+      <th>Service</th>
+      <th>Title</th>
+    </tr>
+  </thead>
+  <tbody class="table-bordered table-striped">
+    <% @hosts.each do |host| %>
+      <% if host['hostname'].status.state == :up %>
+        <% host['ports'].each_with_index do |port, index| %>
+          <tr>
+            <% if index == 0 %>
+              <td rowspan="<%= host['ports'].length %>"><%= host['hostname'] %></td>
+            <% end %>
+            <td><%= port.number %></td>
+            <td><%= port.protocol %></td>
+            <td><%= port.state %></td>
+            <td><%= port.service %></td>
+            <td><%= port.title %></td>
+          </tr>
+        <% end %>
       <% end %>
-    </table>
-  <% else %>
-    <p>Host is down.</p>
-  <% end %>
-<% end %>
-</html>
+    <% end %>
+  </tbody>
+</table>
