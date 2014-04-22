@@ -12,7 +12,9 @@ require 'sinatra/base'
 
 class RubySnoop < Sinatra::Base
   set :bind, '0.0.0.0'
-
+  set :static, true
+  set :public_folder, Proc.new { File.join(root, "static") }
+  
   get '/index' do
     @thing = 'butt'
     erb :index  
