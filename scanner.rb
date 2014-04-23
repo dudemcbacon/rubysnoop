@@ -41,30 +41,20 @@ class Scanner
   #
   # Returns an array of nmap port types.
   def parse(file)
-    hosts = []
-    Nmap::XML.new('scan.xml') do |xml|
-      xml.each_host do |host|
-        current_host = { 'hostname' => host }
-        ports = []
-        host.each_port do |port|
-          # TODO: find a better way to do this...  
-          if port.service.to_s == "http" || port.service.to_s == "https"
-            port.define_singleton_method(:title) do
-              url = "http://#{host.ip}:#{port.number}"
+   Nmap::XML.new('scan.xml') do |xml|
+      xml.each_up_host do |host|
+        host.each_open_port do |port|
+          port.define_singleton_method(:title) do
+            url = "http://#{host.ip}:#{port.number}"
+            begin
               Mechanize.new.get(url).title
-            end
-          else
-            port.define_singleton_method(:title) do
-              ""
+            rescue
+              "Couldn't get title."
             end
           end
-          ports.push(port)
         end
-        current_host['ports'] = ports
-        hosts.push(current_host)
       end
     end
-    hosts
   end
   
   # Public: Get the title of a webpage given a URL.

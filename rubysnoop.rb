@@ -37,7 +37,7 @@ class RubySnoop < Sinatra::Base
     nmap = Scanner.new
      
     if nmap.scan(target, ports, "scan.xml")
-     @hosts = nmap.parse("scan.xml")
+     @scan = nmap.parse("scan.xml")
     end 
     
     File.delete("scan.xml")
@@ -47,7 +47,11 @@ class RubySnoop < Sinatra::Base
 
   helpers do
     def get_title(url)
-      return url #Mechanize.new.get(url).title    
+      begin
+        "<a href='#{url}'>#{Mechanize.new.get(url).title}</a>"  
+      rescue
+        "<a href='#{url}'>Couldn't figure this one out...</a>"
+      end
     end
   end
 end
