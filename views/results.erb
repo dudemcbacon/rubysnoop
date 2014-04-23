@@ -9,7 +9,7 @@
       <th>Title</th>
     </tr>
   </thead>
-  <tbody class="table-bordered table-striped">
+  <tbody class="table-bordered">
     <% @hosts.each do |host| %>
       <% if host['hostname'].status.state == :up %>
         <% host['ports'].each_with_index do |port, index| %>
