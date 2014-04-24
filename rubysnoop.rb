@@ -52,13 +52,13 @@ class RubySnoop < Sinatra::Base
       elsif port.service.to_s == "https"
         url = "https://#{host.ip}:#{port}"
       else
-        " "
+        return " "
       end
       
       begin
-        "<a href='#{url}'>#{Mechanize.new.get(url).title}</a>"  
+        return "<a href='#{url}'>#{Mechanize.new.get(url).title}</a>"  
       rescue
-        "<a href='#{url}'>Dunno, dawg...</a>"
+        return "<a href='#{url}'>Dunno, dawg...</a>"
       end
     end
 
