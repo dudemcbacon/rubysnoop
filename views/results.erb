@@ -22,7 +22,7 @@
           <td><%= port.protocol %></td>
           <td><%= port.state %></td>
           <td><%= port.service %></td>
-          <td><%= get_title "http://#{host.ip}:#{port}" %></td>
+          <td><%= get_title(host, port) %></td>
         </tr>
       <% end %>
     <% end %>

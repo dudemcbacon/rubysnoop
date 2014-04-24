@@ -46,7 +46,15 @@ class RubySnoop < Sinatra::Base
   end
 
   helpers do
-    def get_title(url)
+    def get_title(host, port)
+      if port.service.to_s == "http"
+        url = "http://#{host.ip}:#{port}"
+      elsif port.service.to_s == "https"
+        url = "https://#{host.ip}:#{port}"
+      else
+        " "
+      end
+      
       begin
         "<a href='#{url}'>#{Mechanize.new.get(url).title}</a>"  
       rescue
