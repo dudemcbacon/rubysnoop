@@ -16,7 +16,7 @@
       <% host.each_open_port.with_index do |port, index| %>
         <tr>
           <% if index == 0 %>
-            <td rowspan="<%= host.open_ports.length %>"><%= host.ip %></td>
+            <td rowspan="<%= host.open_ports.length %>"><%= r host.ip %></td>
           <% end %>
           <td><%= port.number %></td>
           <td><%= port.protocol %></td>

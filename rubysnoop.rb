@@ -8,7 +8,7 @@ require 'nmap/xml'
 require 'pry'
 require 'ipaddress'
 require 'sinatra/base'
-
+require 'resolv'
 
 class RubySnoop < Sinatra::Base
   set :bind, '0.0.0.0'
@@ -50,8 +50,12 @@ class RubySnoop < Sinatra::Base
       begin
         "<a href='#{url}'>#{Mechanize.new.get(url).title}</a>"  
       rescue
-        "<a href='#{url}'>Couldn't figure this one out...</a>"
+        "<a href='#{url}'>Dunno, dawg...</a>"
       end
+    end
+
+    def r(ip)
+      Resolv.new.getname ip
     end
   end
 end
