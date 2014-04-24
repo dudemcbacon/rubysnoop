@@ -20,7 +20,7 @@ class Scanner
   def scan(target, ports, filename)
     Nmap::Program.scan do |nmap|
       nmap.syn_scan = false
-      nmap.service_scan = false
+      nmap.service_scan = true
       nmap.os_fingerprint = false
       nmap.xml = filename
       nmap.verbose = true
