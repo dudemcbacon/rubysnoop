@@ -11,6 +11,11 @@
       </span>
     </div>
   </div>
+  <% flash_types.select{ |kind| flash.has?(kind) }.each do |kind| %>
+    <div class="flash <%= kind %>">
+      <%= flash[kind] %>
+    </div>
+  <% end %>
   <div style="visibility:hidden;" class="btn-group" data-toggle="buttons">
     <label class="btn btn-primary">
       <input type="checkbox" checked name="ports[]" value="80"> 80 

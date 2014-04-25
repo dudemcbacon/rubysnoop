@@ -9,17 +9,13 @@ require 'pry'
 require 'ipaddress'
 require 'sinatra/base'
 require 'resolv'
-require 'rack-flash'
+require 'sinatra/flash'
 
 class RubySnoop < Sinatra::Base
   set :bind, '0.0.0.0'
   set :static, true
   set :public_folder, Proc.new { File.join(root, "static") }
   
-  enable :sessions
-  use Rack::Flash, :sweep => true
-
-  get '/index' do
     @thing = 'butt'
     erb :index  
   end
