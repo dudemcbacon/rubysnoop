@@ -9,12 +9,16 @@ require 'pry'
 require 'ipaddress'
 require 'sinatra/base'
 require 'resolv'
+require 'rack-flash'
 
 class RubySnoop < Sinatra::Base
   set :bind, '0.0.0.0'
   set :static, true
   set :public_folder, Proc.new { File.join(root, "static") }
   
+  enable :sessions
+  use Rack::Flash, :sweep => true
+
   get '/index' do
     @thing = 'butt'
     erb :index  
@@ -27,7 +31,8 @@ class RubySnoop < Sinatra::Base
     begin
       hosts = IPAddress.parse target
     rescue ArgumentError
-      return "Please enter a valid IP address or network."
+      flash[:error] = "Please enter a valid IP address or network."
+      erb :index
     end
 
     if ports.nil?
@@ -46,6 +51,10 @@ class RubySnoop < Sinatra::Base
   end
 
   helpers do
+    def flash_types
+      [:success, :notice, :warning, :error]
+    end
+
     def get_title(host, port)
       if port.service.to_s == "http"
         url = "http://#{host.ip}:#{port}"
