@@ -20,7 +20,6 @@ class RubySnoop < Sinatra::Base
   register Sinatra::Flash
 
   get '/' do
-    flash[:success] = "butt"
     erb :index  
   end
 
@@ -31,7 +30,7 @@ class RubySnoop < Sinatra::Base
     begin
       hosts = IPAddress.parse target
     rescue ArgumentError
-      flash[:error] = "Please enter a valid IP address or network."
+      flash[:error] = "Yo dawg, that address is wacky; lets go eat some laffy taffy!"
       redirect '/' 
     end
 

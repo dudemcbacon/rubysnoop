@@ -5,13 +5,16 @@
 <form action="/scan" method="post" role="form">
   <div class="form-group">
     <div class="input-group">
-      <input type="text" class="form-control" name="address" placeholder="127.0.0.1/30">
+      <% if flash[:error] %>
+        <input type="text" class="form-control" name="address" placeholder="<%= flash[:error] %>">
+      <% else %>
+        <input type="text" class="form-control" name="address" placeholder="127.0.0.1/30">
+      <% end %>
       <span class="input-group-btn">
         <button type="submit" class="btn btn-default" type="button">Snoop!</button>
       </span>
     </div>
   </div>
-  <%= styled_flash %>
   <div style="visibility:hidden;" class="btn-group" data-toggle="buttons">
     <label class="btn btn-primary">
       <input type="checkbox" checked name="ports[]" value="80"> 80 
