@@ -15,7 +15,8 @@ class RubySnoop < Sinatra::Base
   set :bind, '0.0.0.0'
   set :static, true
   set :public_folder, Proc.new { File.join(root, "static") }
-  
+
+  get '/index' do
     @thing = 'butt'
     erb :index  
   end
@@ -28,7 +29,7 @@ class RubySnoop < Sinatra::Base
       hosts = IPAddress.parse target
     rescue ArgumentError
       flash[:error] = "Please enter a valid IP address or network."
-      erb :index
+      redirect '/index' 
     end
 
     if ports.nil?
@@ -46,11 +47,7 @@ class RubySnoop < Sinatra::Base
     erb :results
   end
 
-  helpers do
-    def flash_types
-      [:success, :notice, :warning, :error]
-    end
-
+  helpers do  
     def get_title(host, port)
       if port.service.to_s == "http"
         url = "http://#{host.ip}:#{port}"
