@@ -7,17 +7,20 @@ require 'nmap/program'
 require 'nmap/xml'
 require 'pry'
 require 'ipaddress'
-require 'sinatra/base'
 require 'resolv'
+require 'sinatra/base'
 require 'sinatra/flash'
 
 class RubySnoop < Sinatra::Base
   set :bind, '0.0.0.0'
   set :static, true
   set :public_folder, Proc.new { File.join(root, "static") }
+  
+  enable :sessions
+  register Sinatra::Flash
 
-  get '/index' do
-    @thing = 'butt'
+  get '/' do
+    flash[:success] = "butt"
     erb :index  
   end
 
@@ -29,7 +32,7 @@ class RubySnoop < Sinatra::Base
       hosts = IPAddress.parse target
     rescue ArgumentError
       flash[:error] = "Please enter a valid IP address or network."
-      redirect '/index' 
+      redirect '/' 
     end
 
     if ports.nil?
