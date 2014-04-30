@@ -5,7 +5,7 @@ gem 'sinatra-flash', '~> 0.3.0'
 gem 'mechanize', '~> 2.7.3'
 gem 'ruby-nmap', '~> 0.6.0'
 gem 'ipaddress', '~> 0.8.0'
-gem 'capistrano', '~> 3.2.1'
+gem 'capistrano', '~> 2.15.4'
 gem 'rvm-capistrano', '~> 1.5.1'
 
 group :development do
