@@ -2,6 +2,7 @@
 
 require File.dirname(__FILE__) + '/scanner.rb'
 
+require 'rubygems'
 require 'erb'
 require 'nmap/program'
 require 'nmap/xml'
