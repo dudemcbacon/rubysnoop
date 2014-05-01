@@ -16,10 +16,11 @@ set :ssh_options, { :forward_agent => true }
 set :application, 'rubysnoop'
 set :user, 'deploy'
 set :deploy_to, '/srv/www/scan.awesomeindustries.net'
+set :use_sudo, false
 
 # Role Setup
-role :web, 'scan.awesomeindustries.net'
-role :app, 'scan.awesomeindustries.net' 
+role :web, 'awesomeindustries.net'
+role :app, 'awesomeindustries.net' 
 
 before 'deploy:setup', 'rvm:install_rvm'
 before 'deploy:setup', 'rvm:install_ruby'
