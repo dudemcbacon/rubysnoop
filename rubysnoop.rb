@@ -20,27 +20,10 @@ class RubySnoop < Sinatra::Base
   enable :sessions
   register Sinatra::Flash
 
+  @@progress = {}
+
   get '/' do
     erb :index  
-  end
-
-  post '/scan_one' do
-    target = params[:address]
-    ports = params[:ports]
-
-    begin
-      host = IPAddress::IPv4.new target
-      if host.count != 1
-        r = {'success' => false, 'error' => "IP address string must represent exactly one IP address."}
-        JSON.generate(r)
-      else
-        r = {'succes' => true, 'scan_object' => "blah", 'ip_address' => target}
-        JSON.generate(r)
-      end
-    rescue ArgumentError
-      r = {'success' => false, 'error' => "Unable to parse IP Address: #{target}"}
-      JSON.generate(r)
-    end
   end
 
   post '/scan' do
@@ -57,18 +40,42 @@ class RubySnoop < Sinatra::Base
     if ports.nil?
       return "Please select at least one port."
     end
-
-    nmap = Scanner.new
-     
-    if nmap.scan(target, ports, "scan.xml")
-      @scan = nmap.parse("scan.xml")
-    end 
     
-    File.delete("scan.xml")
+    id = session['session_id']
+    if @@progress[id].nil?
+      puts "is nil"
+      @@progress[id] = {}
+      @@progress[id]['total'] = hosts.count
+      @@progress[id]['current'] = 0
+    else
+      puts "is not nil"
+      r = {'success' => false, 'error' => 'Scan already in progress...'}
+      return JSON.generate(r)
+    end
 
-    erb :results
+    thr = Thread.new do
+      hosts.each_with_index do |host,index|
+        @@progress[id]['current'] = index+1
+        puts index
+        sleep(3) 
+        #nmap = Scanner.new
+     
+        #if nmap.scan(host, ports, "scan.xml")
+        #  @scan = nmap.parse("scan.xml")
+        #end 
+    
+        #File.delete("scan.xml")
+      end
+    end
+
+    r = {'success' => 'true', 'info' => "scanning #{hosts.count} host(s)..."}
+    JSON.generate(r)
+    #erb :results
   end
-
+ 
+  get '/get_progress' do
+    JSON.generate(@@progress[session['session_id']])
+  end
   helpers do  
     def get_title(host, port)
       if port.service.to_s == "http"

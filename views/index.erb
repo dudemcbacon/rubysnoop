@@ -2,19 +2,26 @@
 <br></br>
 <h1>Who we snoopin'?</h1>
 <br></br>
-<form id="scanform" action="/scan_one" method="post" role="form">
+<form id="scan" action="/scan" method="post" role="form">
   <div class="form-group">
     <div class="input-group">
       <% if flash[:error] %>
         <input type="text" class="form-control" name="address" placeholder="<%= flash[:error] %>">
+      alert(data); 
       <% else %>
-        <input type="text" class="form-control" name="address" placeholder="127.0.0.1/30">
+        <input id="target" type="text" class="form-control" name="address" placeholder="127.0.0.1/30">
       <% end %>
       <span class="input-group-btn">
         <button type="submit" class="btn btn-default" type="button">Snoop!</button>
       </span>
     </div>
   </div>
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+      <span class="sr-only">60% Complete</span>
+    </div>
+  </div>
+          
   <div style="visibility:hidden;" class="btn-group" data-toggle="buttons">
     <label class="btn btn-primary">
       <input type="checkbox" checked name="ports[]" value="80"> 80 
