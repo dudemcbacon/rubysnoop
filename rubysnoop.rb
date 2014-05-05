@@ -24,6 +24,25 @@ class RubySnoop < Sinatra::Base
     erb :index  
   end
 
+  post '/scan_one' do
+    target = params[:address]
+    ports = params[:ports]
+
+    begin
+      host = IPAddress::IPv4.new target
+      if host.count != 1
+        r = {'success' => false, 'error' => "IP address string must represent exactly one IP address."}
+        JSON.generate(r)
+      else
+        r = {'succes' => true, 'scan_object' => "blah", 'ip_address' => target}
+        JSON.generate(r)
+      end
+    rescue ArgumentError
+      r = {'success' => false, 'error' => "Unable to parse IP Address: #{target}"}
+      JSON.generate(r)
+    end
+  end
+
   post '/scan' do
     target = params[:address]
     ports = params[:ports]
@@ -42,7 +61,7 @@ class RubySnoop < Sinatra::Base
     nmap = Scanner.new
      
     if nmap.scan(target, ports, "scan.xml")
-     @scan = nmap.parse("scan.xml")
+      @scan = nmap.parse("scan.xml")
     end 
     
     File.delete("scan.xml")
